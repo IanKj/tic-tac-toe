@@ -1,0 +1,19 @@
+body {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.gridContainer {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    width: 50vw;
+    height: 50vh;
+    background-color: black;
+    grid-gap: 1px;
+}
+
+div {
+    background-color: white;
+
+}
