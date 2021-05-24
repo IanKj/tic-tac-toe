@@ -3,55 +3,8 @@ const Gameboard = (function () {
     const player2 = playerFactory('Computer', 'O')
     const playerSelections = ['', '', '', '', '', '', '', '', ''];
     const divs = document.querySelectorAll('div');
-
-    const grid = document.querySelector('.gridContainer')
-    const spaces = Array.from(grid.children);
-    function test() {
-        playerSelections.forEach((element, index) => {
-            spaces[index] = element;
-        })
-
-        playerSelections.forEach((element, index) => {
-            divs[index].innerText = element;
-            divs[index].addEventListener('click', function () {
-                if (playerSelections[index] === "") {
-                    playerSelections[index] = player1.symbol;
-                    divs[index].innerText = playerSelections[index];
-                    GameControl.checkForWinner(player1)
-
-                    GameControl.computerPlays()
-                    // if (GameControl.checkForWinner()) {
-                    //     console.log('insdie second checkforwinner')
-
-                    // }
-                }
-
-            })
-        })
-    }
-    return {
-        playerSelections,
-        test,
-        divs,
-        player1,
-        player2
-    }
-})();
-
-Gameboard.test()
-
-function playerFactory(name, symbol) {
-    return { name, symbol }
-}
-
-const GameControl = (function () {
-    const playerSelections = Gameboard.playerSelections
     let winningCombos = [
-        [
-            playerSelections[0],
-            playerSelections[1],
-            playerSelections[2]
-        ],
+        [0, 1, 2],
         [
             playerSelections[0],
             playerSelections[3],
@@ -89,8 +42,46 @@ const GameControl = (function () {
         ],
 
     ]
+    const grid = document.querySelector('.gridContainer')
+    const spaces = Array.from(grid.children);
+    function test() {
+        playerSelections.forEach((element, index) => {
+            spaces[index] = element;
+        })
 
+        playerSelections.forEach((element, index) => {
+            divs[index].innerText = element;
+            divs[index].addEventListener('click', function () {
+                if (playerSelections[index] === "") {
+                    playerSelections[index] = player1.symbol;
+                    divs[index].innerText = playerSelections[index];
+                    if (GameControl.checkForWinner(player1)) {
+                        console.log('player 1 wins!')
+                    }
+                    GameControl.computerPlays()
+                }
 
+            })
+        })
+    }
+    return {
+        playerSelections,
+        test,
+        divs,
+        player1,
+        player2,
+        winningCombos
+    }
+})();
+
+Gameboard.test()
+
+function playerFactory(name, symbol) {
+    return { name, symbol }
+}
+
+const GameControl = (function () {
+    const playerSelections = Gameboard.playerSelections
 
 
     function computerPlays() {
@@ -98,13 +89,15 @@ const GameControl = (function () {
         if (Gameboard.playerSelections[ranNum] === '') {
             Gameboard.playerSelections[ranNum] = Gameboard.player2.symbol;
             Gameboard.divs[ranNum].innerText = Gameboard.player2.symbol;
+            checkForWinner(Gameboard.player2)
         } else {
             computerPlays()
-            //checkForWinner(Gameboard.player2)
+
         }
     }
 
     function checkForWinner(player) {
+        let mySwitch = false
         let winningCombos = [
             [
                 playerSelections[0],
@@ -148,24 +141,32 @@ const GameControl = (function () {
             ],
 
         ]
-        let mySwitch = false;
-        for (let combo of winningCombos) {
-            console.log(combo)
-            if (combo[0] !== '') {
-                if (combo.every(e => e === combo[0])) {
-                    mySwitch = true;
-                    console.log(mySwitch)
-                }
-            }
-            if (mySwitch === true) {
-                console.log('cheese')
-                return true
+
+        function compareArrs(arr, arrToCompare) {
+            if (arr.every((el, index) => {
+                el == arrToCompare[`${arr[index]}`]
+            })
+            ) {
+                console.log('the every worked')
             }
         }
 
+        for (let combo of winningCombos) {
+            //check first value of combo make sure it's not a string, but through playerSelections
+            if (playerSelections[`${combo[0]}`] !== '') {
+                //compare each combo val to playerSelections val
+                //winningCombos, Gameboard.playerSelections
+                compareArrs(combo, Gameboard.playerSelections)
+            }
 
 
 
+            // if ((combo[0] !== '') && (combo.every(e => e === combo[0]))) {
+            //     console.log(Gameboard.winningCombos)
+            //     return true
+            // }
+
+        }
 
     }
 
