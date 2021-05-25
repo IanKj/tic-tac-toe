@@ -3,45 +3,17 @@ const Gameboard = (function () {
     const player2 = playerFactory('Computer', 'O')
     const playerSelections = ['', '', '', '', '', '', '', '', ''];
     const divs = document.querySelectorAll('div');
-    let winningCombos = [
-        [0, 1, 2],
+    let winningCombos =
         [
-            playerSelections[0],
-            playerSelections[3],
-            playerSelections[6]
-        ],
-        [
-            playerSelections[0],
-            playerSelections[4],
-            playerSelections[8]
-        ],
-        [
-            playerSelections[1],
-            playerSelections[4],
-            playerSelections[7]
-        ],
-        [
-            playerSelections[2],
-            playerSelections[5],
-            playerSelections[8]
-        ],
-        [
-            playerSelections[2],
-            playerSelections[4],
-            playerSelections[6]
-        ],
-        [
-            playerSelections[3],
-            playerSelections[4],
-            playerSelections[5]
-        ],
-        [
-            playerSelections[6],
-            playerSelections[7],
-            playerSelections[8]
-        ],
-
-    ]
+            [0, 1, 2],
+            [0, 3, 6],
+            [0, 4, 8],
+            [1, 4, 7],
+            [2, 5, 8],
+            [2, 4, 6],
+            [3, 4, 5],
+            [6, 7, 8]
+        ]
     const grid = document.querySelector('.gridContainer')
     const spaces = Array.from(grid.children);
     function test() {
@@ -55,9 +27,8 @@ const Gameboard = (function () {
                 if (playerSelections[index] === "") {
                     playerSelections[index] = player1.symbol;
                     divs[index].innerText = playerSelections[index];
-                    if (GameControl.checkForWinner(player1)) {
-                        console.log('player 1 wins!')
-                    }
+                    GameControl.checkForWinner(player1)
+
                     GameControl.computerPlays()
                 }
 
@@ -97,7 +68,6 @@ const GameControl = (function () {
     }
 
     function checkForWinner(player) {
-        let mySwitch = false
         let winningCombos = [
             [
                 playerSelections[0],
@@ -142,52 +112,33 @@ const GameControl = (function () {
 
         ]
 
-        function compareArrs(arr, arrToCompare) {
-            if (arr.every((el, index) => {
-                el == arrToCompare[`${arr[index]}`]
+        for (const [index, combo] of winningCombos.entries()) {
+            //check if three match
+            //pull the index from the three matching's array
+            if ((combo[0] !== '') && (combo.every(el => el === combo[0]))) {
+                //loop over the other winningCombo at the returned index
+                //style the winning playerSelections through the looped array
+                for (let innerCombo of Gameboard.winningCombos[index]) {
+                    Gameboard.divs[innerCombo].style.backgroundColor = 'pink'
+                }
+            }
+        }
+
+        function clearBoard() {
+            Gameboard.playerSelections.forEach((element, index) => {
+                Gameboard.playerSelections[index] = '';
+                Gameboard.divs[index].innerText = playerSelections[index];
             })
-            ) {
-                console.log('the every worked')
-            }
-        }
-
-        for (let combo of winningCombos) {
-            //check first value of combo make sure it's not a string, but through playerSelections
-            if (playerSelections[`${combo[0]}`] !== '') {
-                //compare each combo val to playerSelections val
-                //winningCombos, Gameboard.playerSelections
-                compareArrs(combo, Gameboard.playerSelections)
-            }
-
-
-
-            // if ((combo[0] !== '') && (combo.every(e => e === combo[0]))) {
-            //     console.log(Gameboard.winningCombos)
-            //     return true
-            // }
 
         }
 
     }
-
-    function showWinner() {
-
-    }
-    function clearBoard() {
-        Gameboard.playerSelections.forEach((element, index) => {
-            Gameboard.playerSelections[index] = '';
-            Gameboard.divs[index].innerText = playerSelections[index];
-        })
-
-    }
-
-
     return {
         checkForWinner,
-        clearBoard,
         playerSelections,
         computerPlays
     }
+
 })();
 
 
