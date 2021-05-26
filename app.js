@@ -28,8 +28,9 @@ const Gameboard = (function () {
                     playerSelections[index] = player1.symbol;
                     divs[index].innerText = playerSelections[index];
                     GameControl.checkForWinner(player1)
-
-                    GameControl.computerPlays()
+                    if (!GameControl.checkForWinner(player1)) {
+                        GameControl.computerPlays()
+                    }
                 }
 
             })
@@ -53,7 +54,8 @@ function playerFactory(name, symbol) {
 
 const GameControl = (function () {
     const playerSelections = Gameboard.playerSelections
-
+    const grid = document.querySelector('main');
+    const resetBtn = document.querySelector('.resetBtn')
 
     function computerPlays() {
         let ranNum = Math.floor(Math.random() * Gameboard.playerSelections.length)
@@ -111,28 +113,37 @@ const GameControl = (function () {
             ],
 
         ]
-
+        let mySwitch
         for (const [index, combo] of winningCombos.entries()) {
             //check if three match
             //pull the index from the three matching's array
             if ((combo[0] !== '') && (combo.every(el => el === combo[0]))) {
+                grid.classList.add('clicksDisabled')
                 //loop over the other winningCombo at the returned index
                 //style the winning playerSelections through the looped array
                 for (let innerCombo of Gameboard.winningCombos[index]) {
-                    Gameboard.divs[innerCombo].style.backgroundColor = 'pink'
+
+                    Gameboard.divs[innerCombo].classList.add('winner')
                 }
+                mySwitch = true
             }
         }
-
-        function clearBoard() {
-            Gameboard.playerSelections.forEach((element, index) => {
-                Gameboard.playerSelections[index] = '';
-                Gameboard.divs[index].innerText = playerSelections[index];
-            })
-
+        if (mySwitch === true) {
+            return true
         }
-
     }
+    resetBtn.addEventListener('click', resetBoard);
+
+    function resetBoard() {
+        grid.classList.remove('clicksDisabled')
+        Gameboard.playerSelections.forEach((element, index) => {
+            Gameboard.playerSelections[index] = '';
+            Gameboard.divs[index].innerText = '';
+            Gameboard.divs[index].classList.remove('winner')
+        })
+    }
+
+
     return {
         checkForWinner,
         playerSelections,
@@ -142,97 +153,3 @@ const GameControl = (function () {
 })();
 
 
-
-
-
-    // if (playerSelections[0]) {
-    //         if (
-    //             ((playerSelections[0] === playerSelections[1]) &&
-    //                 (playerSelections[1] === playerSelections[2]))
-    //             ||
-    //             ((playerSelections[0] === playerSelections[3]) &&
-    //                 (playerSelections[3] === playerSelections[6]))
-
-    //             ||
-    //             ((playerSelections[0] === playerSelections[4]) &&
-    //                 (playerSelections[4] === playerSelections[8]))
-    //         ) {
-    //             console.log('hmmm')
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[1]) {
-    //         if ((playerSelections[1] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[7])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[2]) {
-    //         if ((playerSelections[2] === playerSelections[5]) &&
-    //             (playerSelections[5] === playerSelections[8])) {
-    //             return true
-    //         }
-    //         else if ((playerSelections[2] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[6])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[3]) {
-    //         if ((playerSelections[3] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[5])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[6]) {
-    //         if ((playerSelections[6] === playerSelections[7]) &&
-    //             (playerSelections[7] === playerSelections[8])) {
-    //             return true
-    //         }
-    //     }
-    // }
-
-    //     if (playerSelections[0]) {
-    //         if (
-    //             ((playerSelections[0] === playerSelections[1]) &&
-    //                 (playerSelections[1] === playerSelections[2]))
-    //             ||
-    //             ((playerSelections[0] === playerSelections[3]) &&
-    //                 (playerSelections[3] === playerSelections[6]))
-
-    //             ||
-    //             ((playerSelections[0] === playerSelections[4]) &&
-    //                 (playerSelections[4] === playerSelections[8]))
-    //         ) {
-    //             console.log('hmmm')
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[1]) {
-    //         if ((playerSelections[1] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[7])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[2]) {
-    //         if ((playerSelections[2] === playerSelections[5]) &&
-    //             (playerSelections[5] === playerSelections[8])) {
-    //             return true
-    //         }
-    //         else if ((playerSelections[2] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[6])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[3]) {
-    //         if ((playerSelections[3] === playerSelections[4]) &&
-    //             (playerSelections[4] === playerSelections[5])) {
-    //             return true
-    //         }
-    //     }
-    //     if (playerSelections[6]) {
-    //         if ((playerSelections[6] === playerSelections[7]) &&
-    //             (playerSelections[7] === playerSelections[8])) {
-    //             return true
-    //         }
-    //     }
-    // }

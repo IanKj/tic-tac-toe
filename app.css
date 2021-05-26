@@ -1,7 +1,19 @@
+
 body {
-    display: flex;
-    justify-content: center;
     box-sizing: border-box;
+    display: flex;
+    justify-content: space-evenly;
+    
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: vh;
+    margin: 0;
+    background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 4%, rgba(0,212,255,1) 100%);
+}
+h1 {
+    font-size: 5rem;
 }
 .gridContainer {
     display: grid;
@@ -9,11 +21,46 @@ body {
     grid-template-columns: repeat(3, 1fr);
     width: 50vw;
     height: 50vh;
-    background-color: black;
     grid-gap: 1px;
+
 }
 
-div {
-    background-color: white;
 
+div {
+    background-color: black;
+    opacity: .5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: white;
+    transition: all 500ms;
+    cursor: pointer;
+}
+
+div:hover {
+opacity: .6;
+}
+
+.resetBtn {
+    margin-top: 50px;
+    width: 100px;
+    height: 50px;
+    font-size: 2rem;
+    border-radius: 10px;
+    transition: all, 500ms;
+}
+
+.resetBtn:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.winner {
+    opacity: 1;
+    font-size: 4rem;
+}
+
+.clicksDisabled {
+    pointer-events: none;
 }
