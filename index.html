@@ -16,16 +16,25 @@
             <section class="resultsWrapper">
                 <section class="gameOptions">
                     <div class="buttonWrapper">
-                        <button class="playComputer">Vs Computer</button>
+                        <button class="playComputer active">Vs Computer</button>
                         <button class="playHuman">Vs Human</button>
                     </div>
-                    <form action="#" return false>
-                        <label for="player1Input">Player 1</label>
-                        <input type="text" name="player1Input" , id="player1Input" maxlength="10">
-                        <label for="player2Input">Player 2</label>
-                        <input type="text" name="player2Input" , id="player2Input" maxlength="10">
-                        <input type="submit">
-                    </form>
+                    <div class="formWrapper">
+                        <section class="hiddenForm noDisplay">
+                            <p><strong>Ian</strong></p>
+                            <p>vs</p>
+                            <p><strong>Bella</strong></p>
+                        </section>
+                        <form action="#" class="hidden" return false>
+
+                            <label for="player1Input">Player 1</label>
+                            <input required type="text" name="player1Input" , id="player1Input" maxlength="10">
+                            <label for="player2Input">Player 2</label>
+                            <input required type="text" name="player2Input" , id="player2Input" maxlength="10">
+                            <input id="submitBtn" type="submit">
+                        </form>
+                    </div>
+
                 </section>
 
                 <h3 class="results"></h3>
